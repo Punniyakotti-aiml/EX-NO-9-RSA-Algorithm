@@ -1,5 +1,4 @@
 # EX-NO-9-RSA-Algorithm
-
 ## AIM:
 To Implement RSA Encryption Algorithm in Cryptography
 
@@ -38,99 +37,78 @@ The security of RSA relies on the difficulty of factoring large numbers; thus, c
 ## Program:
 ```
 #include <stdio.h>
-#include <string.h>
 #include <math.h>
-#include <ctype.h>
-#include <stdlib.h>
-
 int gcd(int a, int b) {
-    while (b != 0) {
-        int temp = b;
-        b = a % b;
-        a = temp;
-    }
-    return a;
+while (b != 0)
+{ int temp =
+b; b = a % b;
+a = temp;
 }
-long long mod_exp(long long base, long long exp, long long mod) {
-    long long result = 1;
-    while (exp > 0) {
-        if (exp % 2 == 1)
-            result = (result * base) % mod;
-        base = (base * base) % mod;
-        exp = exp / 2;
-    }
-    return result;
+return a;
 }
-
-int mod_inverse(int e, int phi) {
-    int t = 0, newt = 1;
-    int r = phi, newr = e;
-    while (newr != 0) {
-        int quotient = r / newr;
-        int temp = t;
-        t = newt;
-        newt = temp - quotient * newt;
-        temp = r;
-        r = newr;
-        newr = temp - quotient * newr;
-    }
-    if (r > 1) return -1;
-    if (t < 0) t = t + phi;
-    return t;
+int mod_exp(int base, int exp, int mod)
+{ int result = 1;
+base = base % mod;
+while (exp > 0) {
+if (exp % 2 == 1) {
+result = (result * base) % mod;
 }
-
+exp = exp >> 1;
+base = (base * base) % mod;
+}
+return result;
+}
+int mod_inverse(int e, int phi_n)
+{ int t = 0, new_t = 1;
+int r = phi_n, new_r = e;
+while (new_r != 0) {
+int quotient = r / new_r;
+int temp_t = t;
+t = new_t;
+new_t = temp_t - quotient * new_t;
+int temp_r = r;
+r = new_r;
+new_r = temp_r - quotient * new_r;
+}
+if (r > 1) return -1;
+if (t < 0) t += phi_n;
+return t;
+}
 int main() {
-    int p = 61;
-    int q = 53;
-    int n = p * q;
-    int phi = (p - 1) * (q - 1);
-    int e = 17;
-    if (gcd(e, phi) != 1) {
-        printf("e and phi(n) are not coprime!\n");
-        return -1;
-    }
-    int d = mod_inverse(e, phi);
-    if (d == -1) {
-        printf("No modular inverse found for e!\n");
-        return -1;
-    }
-
-    printf("Public Key: (e = %d, n = %d)\n", e, n);
-    printf("Private Key: (d = %d, n = %d)\n", d, n);
-
-    char message[100];
-    printf("Enter a message to encrypt (alphabetic characters only): ");
-    fgets(message, sizeof(message), stdin);
-    int len = strlen(message);
-    if (message[len - 1] == '\n') message[len - 1] = '\0'; 
-    printf("\nEncrypted Message:\n");
-    long long encrypted[100];
-    for (int i = 0; i < len; i++) {
-        int m = (int)message[i];  
-        encrypted[i] = mod_exp(m, e, n);  
-        printf("%lld ", encrypted[i]);  
-    }
-    printf("\n");
-
-    // Step 8: Decrypt the message
-    printf("\nDecrypted Message:\n");
-    for (int i = 0; i < len; i++) {
-        int decrypted = (int)mod_exp(encrypted[i], d, n);  
-        printf("%c", (char)decrypted); 
-    printf("\n");
-
-    return 0;
+int p, q, n, phi_n, e, d;
+int message, encrypted_message, decrypted_message;
+printf("Enter a prime number (p): ");
+scanf("%d", Cp);
+printf("Enter another prime number (q): ");
+scanf("%d", Cq);
+n = p * q;
+phi_n = (p - 1) * (q - 1);
+do {
+printf("Enter a value for public key exponent (e) such that 1 < e < %d: ", phi_n);
+scanf("%d", Ce);
+} while (gcd(e, phi_n) != 1);
+d = mod_inverse(e, phi_n);
+if (d == -1) {
+printf("Modular inverse does not exist for the given 'e'. Exiting.\n");
+return 1;
+}
+printf("Public key: (n = %d, e = %d)\n", n, e);
+printf("Private key: (n = %d, d = %d)\n", n, d);
+printf("Enter the message to encrypt (as an integer): ");
+scanf("%d", Cmessage);
+encrypted_message = mod_exp(message, e, n);
+printf("Encrypted message: %d\n", encrypted_message);
+decrypted_message = mod_exp(encrypted_message, d, n);
+printf("Decrypted message: %d\n", decrypted_message);
+return 0;
 }
 ```
 
 
 
-
 ## Output:
 
-
-<img width="1746" height="947" alt="image" src="https://github.com/user-attachments/assets/a977636b-54ab-4ba6-a1a3-9f324d6b788d" />
-
+<img width="693" height="298" alt="image" src="https://github.com/user-attachments/assets/75b37223-eaf1-414b-aa44-fbc59316a705" />
 
 
 ## Result:
